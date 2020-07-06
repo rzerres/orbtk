@@ -1,10 +1,3 @@
-/// The 'Material Design Icons' is the official icon set from Google.
-/// The icons are designed under the material design guidelines.
-/// The official repository is no longer maintained from Google.
-/// A successosr project is hosted at:
-/// https://github.com/material-icons/material-icons
-/// This repository includes only icons as icon font
-
 /*
  * Howto evaluate the glyph codes
  */
