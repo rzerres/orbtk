@@ -15,13 +15,14 @@ impl RenderObject for TextRenderObject {
         let (bounds, text, foreground, font, font_size, offset) = {
             let widget = ctx.widget();
             let text = text(&widget);
+            let water_mark = water_mark(&widget);
             let offset = *widget.get::<f64>("offset");
 
             let txt = {
                 if !text.is_empty() {
                     text
                 } else {
-                    widget.clone_or_default::<String>("water_mark")
+                    water_mark
                 }
             };
             (
@@ -80,6 +81,24 @@ fn text(widget: &WidgetContainer) -> String {
 
     if let Some(text) = widget.try_get::<String>("text") {
         return text.clone();
+    }
+
+    String::default()
+}
+
+fn water_mark(widget: &WidgetContainer) -> String {
+    if let Some(localizable) = widget.try_get::<bool>("localizable") {
+        if *localizable {
+            if let Some(localized_water_mark) = widget.try_get::<String>("localized_water_mark") {
+                if !localized_water_mark.is_empty() {
+                    return localized_water_mark.clone();
+                }
+            }
+        }
+    }
+
+    if let Some(water_mark) = widget.try_get::<String>("water_mark") {
+        return water_mark.clone();
     }
 
     String::default()
