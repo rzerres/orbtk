@@ -1,11 +1,33 @@
 Dictionary (
     words: {
+        //Buttons
+        "Button": "Wahlknopf",
+        "Primary": "Primär",
+        "Text only": "nur Text",
+        "TooggleButton": "Umschaltknopf",
+        "Header": "Überschrift",
+        "Insert text...": "Eingabetext...",
+        "Insert password...": "Passwort eingeben...",
+
+        //Items
+        //"ItemsWidget": "Oberflächen-Elemente",
+
+        //Layouts
+        "ColumnSpan": "einbezogone Spalten",
+        //"Padding": "Füllung-Regeln",
+
+        //Localization
         "Hello": "Hallo",
         "world": "Welt",
         "I": "ich",
         "love": "liebe",
         "localization": "Lokalisierung",
         "German": "Deutsch",
-        "English": "Englisch"
+        "English": "Englisch",
+
+        //Navigation
+        "Page 1": "Seite 1",
+        "Page 2": "Seite 2",
+        "Page 3": "Seite 3",
     }
 )
