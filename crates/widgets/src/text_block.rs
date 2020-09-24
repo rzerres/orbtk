@@ -14,6 +14,11 @@ impl TextBlockState {
         let localized_text = ctx.localize_text(text);
 
         TextBlock::localized_text_set(&mut ctx.widget(), localized_text);
+
+        let water_mark = TextBlock::water_mark_clone(&ctx.widget());
+        let localized_water_mark = ctx.localize_text(water_mark);
+
+        TextBlock::localized_water_mark_set(&mut ctx.widget(), localized_water_mark);
     }
 }
 
@@ -40,6 +45,9 @@ widget!(
 
         /// Sets or shares the water_mark text property.
         water_mark: String,
+
+        /// If the `TextBlock` is localizable and the localized water_mark is not empty, the localized_water_mark will be drawn.
+        localized_water_mark: String,
 
         /// Sets or shares the foreground property.
         foreground: Brush,
