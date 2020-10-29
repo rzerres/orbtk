@@ -39,7 +39,7 @@ pub mod platform;
 
 #[cfg(all(
     not(target_arch = "wasm32"),
-    any(feature = "default", feature = "orbraq"),
+    any(feature = "default", feature = "orbraq", feature = "orbskia"),
     not(feature = "miniraq")
 ))]
 #[path = "orbclient/mod.rs"]
