@@ -37,7 +37,8 @@ threadpool = "1.8"
 stdweb = "0.4"
 
 [features]
-default = ["orbtk_shell/orbraq"]
+default = ["orbtk_shell/orbskia"]
 orbraq = ["orbtk_shell/orbraq"]
+orbskia = ["orbtk_shell/orbskia"]
 miniraq = ["orbtk_shell/miniraq", "orbtk_render/miniraq"]
 debug = []

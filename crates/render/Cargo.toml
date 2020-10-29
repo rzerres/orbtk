@@ -16,6 +16,9 @@ smallvec = { version = "1", default-features = false }
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 image = { version = "0.23",  default-features = false, features = ["ico"] }
 
+# tiny-skia depenencies
+tiny-skia = { git = "https://github.com/RazrFalcon/tiny-skia.git", optional = true }
+
 # raqote depenencies
 raqote = { git = "https://github.com/jrmuizel/raqote.git", default-features = false, optional = true }
 rusttype = { version = "0.9", optional = true }
@@ -25,6 +28,7 @@ smallvec = "1"
 orbtk_utils = { path = "../utils", version = "0.3.1-alpha4" }
 
 [features]
-default = ["raqote", "rusttype"]
+default = ["tiny-skia", "rusttype"]
 orbraq = ["raqote", "rusttype"]
+orbskia = ["tiny-skia", "rusttype"]
 miniraq = ["raqote", "rusttype"]

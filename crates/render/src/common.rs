@@ -240,7 +240,12 @@ impl PathRect {
 
     #[cfg(all(
         not(target_arch = "wasm32"),
-        any(feature = "default", feature = "orbraq", feature = "miniraq"),
+        any(
+            feature = "default",
+            feature = "orbraq",
+            feature = "miniraq",
+            feature = "orbskia"
+        ),
     ))]
     /// Checks if the current instance is enclosed.
     pub fn get_clip(&self) -> Option<Rectangle> {
