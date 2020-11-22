@@ -23,6 +23,10 @@ path = "src/lib.rs"
 
 [profile.dev]
 opt-level = 1
+incremental = true
+
+[profile.release]
+incremental = true
 
 [dependencies]
 orbtk_proc_macros = { version = "0.3.1-alpha4", path = "crates/proc_macros" }
