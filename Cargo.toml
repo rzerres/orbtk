@@ -44,6 +44,7 @@ orbtk_widgets = { version = "0.3.1-alpha4", path="crates/widgets", default-featu
 dces = { git = "https://gitlab.redox-os.org/redox-os/dces-rust.git", branch = "develop" }
 
 [dev-dependencies]
+cfg-if = "~1.0"
 euc = "0.5.0"
 vek = "0.10.2"
 serde = "1.0.106"
