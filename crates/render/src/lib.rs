@@ -6,7 +6,12 @@ pub mod prelude;
 
 pub use orbtk_utils::prelude as utils;
 
-#[cfg(all(any(feature = "default", feature = "orbraq", feature = "miniraq", feature = "orbskia")))]
+#[cfg(all(any(
+    feature = "default",
+    feature = "orbraq",
+    feature = "miniraq",
+    feature = "orbskia"
+)))]
 mod common;
 
 #[cfg(all(
