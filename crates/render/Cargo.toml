@@ -30,7 +30,7 @@ rusttype = { version = "0.9", optional = true }
 orbtk_utils = { path = "../utils", version = "0.3.1-alpha4" }
 
 [features]
-default = ["tiny-skia", "rusttype"]
+default = ["raqote", "rusttype"]
 orbraq = ["raqote", "rusttype"]
 orbskia = ["tiny-skia", "rusttype"]
 miniraq = ["raqote", "rusttype"]
