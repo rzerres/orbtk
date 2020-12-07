@@ -1,0 +1,25 @@
+Theme (
+    styles: {
+        "button_menu": (
+            base: "button",
+            properties: {
+                //"background": "$BACKGROUND",
+                //"background": "$BRIGHT_GRAY_COLOR",
+                "background": "transparent",
+                "border_radius": 0,
+                "h_align": "start",
+                "v_align": "center",
+                //"padding": 4,
+            },
+        ),
+        "table_form": (
+            base: "container",
+            properties: {
+                "padding": 14,
+                "border_brush": "$CONTAINER_BORDER",
+                "border_radius": 0,
+                "border_width": 1,
+            },
+        ),
+    }
+)

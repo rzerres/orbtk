@@ -1,0 +1,9 @@
+Dictionary (
+    words: {
+        // MainView
+        "Symbol": "Glyph-Symbol",
+        "Icon list": "Symbol-Liste",
+        "Identifier": "Kennung",
+        "Unicode string": "Unicode Zeichen",
+    }
+)
