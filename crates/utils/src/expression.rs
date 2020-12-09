@@ -4,15 +4,21 @@ use std::iter::Peekable;
 use std::ops::Neg;
 use std::{convert::TryFrom, str::Chars};
 
-// Describes a String declared expression either be a method, a color, a number or anything.
-/// This object represents a `expression` used to define something(currently is only use to define
+// Describes a String declared expression either be a method, a color,
+// a number or anything.
+/// This object represents an `expression` used to define something (currently is only use to define
 /// brushes in themes but that can change in the future.
 #[derive(Clone, PartialEq, PartialOrd, Debug)]
 pub enum Expression {
+    /// A pair given as a `String` and a `Vector` with members of type Expression
     Method(String, Vec<Expression>),
+    /// A `vector` with members of type Expression
     Complex(Vec<Expression>),
+    /// A pair given as a `Number` and a `String`
     Number(Number, String),
+    /// A `Color` value
     Color(Color),
+    /// A `String` value
     Other(String),
 }
 
@@ -25,6 +31,7 @@ impl Expression {
         }
     }
 
+    /// Try to convert `self` into a `Color`
     pub fn color(&self) -> Option<Color> {
         match self {
             Expression::Color(color) => Some(*color),
@@ -101,6 +108,8 @@ impl Expression {
         }
     }
 
+    /// Defines a `relative direction` given as a lable string.
+    /// The return value will be
     pub fn relative_dir(&self) -> Option<RelativeDir> {
         match self {
             Expression::Other(label) => match &label[..] {
@@ -118,6 +127,7 @@ impl Expression {
         }
     }
 
+    // Defines an `angle` given with metric rad, trun or deg.
     pub fn angle(&self) -> Option<Angle> {
         match self {
             Expression::Number(num, unit) => {
@@ -136,6 +146,7 @@ impl Expression {
         }
     }
 
+    /// Defines a cascading style sheet `Gradient`
     pub fn css_gradient(&self) -> Option<Gradient> {
         let mut displacement = OnPlanePos::new(
             OnLinePos::new(0.0, OnLinePosKind::Pixels),
@@ -224,6 +235,7 @@ impl Expression {
         })
     }
 
+    /// Defines a `Brush`
     pub fn brush(&self) -> Option<Brush> {
         if let Some(color) = self.color() {
             return Some(Brush::from(color));
@@ -250,6 +262,7 @@ impl Into<Number> for Expression {
     }
 }
 
+/// Parses a given expression
 pub(crate) fn parse_expression_with_complex(chrs: &mut Peekable<Chars>) -> Option<Expression> {
     let mut v = Vec::new();
     while let Some(c) = chrs.peek() {
@@ -361,22 +374,27 @@ pub struct OnPlanePos {
 }
 
 impl OnPlanePos {
+    /// Create a new `OnPlanePos` object
     pub fn new(x: OnLinePos, y: OnLinePos) -> OnPlanePos {
         OnPlanePos { x, y }
     }
 
+    /// Define the `x` coordinate of the `OnPlanePos` object
     pub fn x(&self) -> OnLinePos {
         self.x
     }
 
+    /// Define the `y` coordinate of the `OnPlanePos` object
     pub fn y(&self) -> OnLinePos {
         self.y
     }
 
+    /// Define a mutable `x` coordinate of the `OnPlanePos` object
     pub fn x_mut(&mut self) -> &mut OnLinePos {
         &mut self.x
     }
 
+    /// Define a mutable `y` coordinate of the `OnPlanePos` object
     pub fn y_mut(&mut self) -> &mut OnLinePos {
         &mut self.y
     }
@@ -414,14 +432,17 @@ pub struct OnLinePos {
 }
 
 impl OnLinePos {
+    /// Create a new `OnLinePos` object
     pub fn new(pos: f64, kind: OnLinePosKind) -> OnLinePos {
         OnLinePos { pos, kind }
     }
 
+    /// Retruns the `OnLinePos` as a percentage value
     pub fn from_unit_percent(pos: f64) -> OnLinePos {
         Self::new(pos * 100.0, OnLinePosKind::Percentage)
     }
 
+    /// Retruns the position as a floating point value
     pub fn pos(&self) -> f64 {
         self.pos
     }

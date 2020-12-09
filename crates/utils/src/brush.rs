@@ -94,7 +94,7 @@ use crate::prelude::*;
 /// starts at a given point inside the entity and points to an
 /// imaginary target point within the same entity. Gradients will be
 /// rendered along the choosen direction to reach its target
-/// poing. Supported directions are:
+/// point. Supported directions are:
 ///
 ///  * "to bottom"
 ///  * "to bottom left"

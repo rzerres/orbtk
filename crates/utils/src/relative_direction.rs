@@ -1,5 +1,7 @@
 use crate::Point;
 
+/// Define possible `relative directions` when traversing a line from
+/// a start point to an end point
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
 pub enum RelativeDir {
     Top,
