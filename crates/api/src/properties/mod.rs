@@ -92,6 +92,7 @@ into_property_source!(PathBuf);
 // Implementation of PropertySource for utils types
 into_property_source!(utils::Alignment: &str);
 into_property_source!(utils::Brush: &str, utils::Color, utils::Value);
+into_property_source!(utils::IconAlignment: &str);
 into_property_source!(utils::Orientation: &str);
 into_property_source!(utils::Point: f64, i32, (i32, i32), (f64, f64));
 into_property_source!(utils::Size: f64, i32, (i32, i32), (f64, f64));

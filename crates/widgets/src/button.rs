@@ -37,14 +37,17 @@ widget!(
         /// Sets or shares the icon property.
         icon: String,
 
+        /// Sets the icon alignment property (default: start).
+        icon_alignment: IconAlignment,
+
         /// Sets or shares the icon brush property.
         icon_brush: Brush,
 
-        /// Sets or share the icon font size property.
-        icon_size: f64,
-
         /// Sets or shares the icon font property.
         icon_font: String,
+
+        /// Sets or share the icon font size property.
+        icon_size: f64,
 
         /// Sets or shares the pressed property.
         pressed: bool,
@@ -62,6 +65,94 @@ widget!(
 
 impl Template for Button {
     fn template(self, id: Entity, ctx: &mut BuildContext) -> Self {
+        println!("button: want to align icon to {:?} in the stack.", &self.icon_alignment);
+        let button_stack = match &self.icon_alignment {
+            // IconAlignment::Start => {  // this will render to a type mismatch!!
+            //     // first align the icon block, text will be at the end
+            //     Stack::new()
+            //         .orientation("horizontal")
+            //         .spacing(id)
+            //         .h_align("center")
+            //         .child(
+            //             FontIconBlock::new()
+            //                 .v_align("center")
+            //                 .icon(id)
+            //                 .icon_brush(id)
+            //                 .icon_size(id)
+            //                 .icon_font(id)
+            //                 .opacity(id)
+            //                 .build(ctx),
+            //         )
+            //         .child(
+            //             TextBlock::new()
+            //                 .v_align("center")
+            //                 .foreground(id)
+            //                 .text(id)
+            //                 .font_size(id)
+            //                 .font(id)
+            //                 .opacity(id)
+            //                 .build(ctx),
+            //         )
+            //         .build(ctx)
+            // },
+            // IconAlignment::End => {  // this will render to a type mismatch!!
+            //     // first align the text block, icon block will be at the end
+            //     Stack::new()
+            //         .orientation("horizontal")
+            //         .spacing(id)
+            //         .h_align("center")
+            //         .child(
+            //             TextBlock::new()
+            //                 .v_align("center")
+            //                 .foreground(id)
+            //                 .text(id)
+            //                 .font_size(id)
+            //                 .font(id)
+            //                 .opacity(id)
+            //                 .build(ctx),
+            //         )
+            //         .child(
+            //             FontIconBlock::new()
+            //                 .v_align("center")
+            //                 .icon(id)
+            //                 .icon_brush(id)
+            //                 .icon_size(id)
+            //                 .icon_font(id)
+            //                 .opacity(id)
+            //                 .build(ctx),
+            //         )
+            //         .build(ctx)
+            // },
+            _ => {
+                // default behaviour
+                Stack::new()
+                    .orientation("horizontal")
+                    .spacing(id)
+                    .h_align("center")
+                    .child(
+                        FontIconBlock::new()
+                            .v_align("center")
+                            .icon(id)
+                            .icon_brush(id)
+                            .icon_size(id)
+                            .icon_font(id)
+                            .opacity(id)
+                            .build(ctx),
+                    )
+                    .child(
+                        TextBlock::new()
+                            .v_align("center")
+                            .foreground(id)
+                            .text(id)
+                            .font_size(id)
+                            .font(id)
+                            .opacity(id)
+                            .build(ctx),
+                    )
+                    .build(ctx)
+            }
+        };
+
         self.name("Button")
             .style("button")
             .height(36.0)
@@ -76,9 +167,10 @@ impl Template for Button {
             .font_size(fonts::FONT_SIZE_12)
             .font("Roboto-Regular")
             .icon("")
+            .icon_alignment(IconAlignment::Start)
+            .icon_brush(colors::LINK_WATER_COLOR)
             .icon_font("MaterialIcons-Regular")
             .icon_size(fonts::ICON_FONT_SIZE_12)
-            .icon_brush(colors::LINK_WATER_COLOR)
             .pressed(false)
             .spacing(8.0)
             .container_margin(0)
@@ -96,33 +188,7 @@ impl Template for Button {
                             .padding(id)
                             .opacity(id)
                             .margin(("container_margin", id))
-                            .child(
-                                Stack::new()
-                                    .orientation("horizontal")
-                                    .spacing(id)
-                                    .h_align("center")
-                                    .child(
-                                        FontIconBlock::new()
-                                            .v_align("center")
-                                            .icon(id)
-                                            .icon_brush(id)
-                                            .icon_size(id)
-                                            .icon_font(id)
-                                            .opacity(id)
-                                            .build(ctx),
-                                    )
-                                    .child(
-                                        TextBlock::new()
-                                            .v_align("center")
-                                            .foreground(id)
-                                            .text(id)
-                                            .font_size(id)
-                                            .font(id)
-                                            .opacity(id)
-                                            .build(ctx),
-                                    )
-                                    .build(ctx),
-                            )
+                            .child(button_stack)
                             .build(ctx),
                     )
                     .build(ctx),
