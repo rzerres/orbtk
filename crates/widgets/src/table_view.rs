@@ -8,7 +8,7 @@ const ORDER_DESC_ICON: &str = "\u{e068}";
 type RowBuilder = Option<Box<dyn Fn(&mut BuildContext, usize, &mut Vec<Entity>)>>;
 type RowSorter = Option<Box<dyn Fn(&str, TableSortDirection, Entity, &mut Context)>>;
 enum TableAction {
-    AddDefaultColumn(String, String),
+    AddDefaultColumn(String, String, IconAlignment),
     Sort(String),
 }
 
@@ -156,13 +156,14 @@ impl TableState {
 
     fn generate_column_headers(&mut self, ctx: &mut Context) {
         for action in &self.actions {
-            if let TableAction::AddDefaultColumn(title, column_id) = action {
+            if let TableAction::AddDefaultColumn(title, column_id, icon_alignment) = action {
                 let table_view = ctx.entity();
                 let c_id = column_id.clone();
                 let build_context = &mut ctx.build_context();
                 let header = Button::new()
                     .id(column_id.clone())
                     .icon_brush("#000000")
+                    .icon_alignment(icon_alignment.clone())
                     .style("table_column_header")
                     .text(title.clone())
                     .on_click(move |states, _| -> bool {
@@ -323,6 +324,9 @@ widget!(
         /// Sets or shares the Entity of the widget is holding the data to display
         data_source: u32,
 
+        /// Sets the icon alignment property (default: Start).
+        icon_alignment: IconAlignment,
+
         /// Set it tro `true` to trigger redrawing of the items.
         request_update: bool,
 
@@ -347,6 +351,7 @@ impl Template for TableView {
             .border_radius(0)
             .border_width(0)
             .column_count(0)
+            .icon_alignment(IconAlignment::End)
             .request_update(false)
             .row_count(0)
             .child(
@@ -380,13 +385,15 @@ impl TableView {
     /// # Arguments:
     /// * `title`: the title of the column. It will be displayed in the header of the table.
     /// * `column_id`: the unique id of the column.
-    pub fn column<T: AsRef<str>>(mut self, title: T, column_id: T) -> Self {
+    /// * `icon_alignment`: position the button icon will be aligned.
+    pub fn column<T: AsRef<str>>(mut self, title: T, column_id: T, icon_alignment: IconAlignment) -> Self {
         let title = title.as_ref().to_owned();
         let column_id = column_id.as_ref().to_owned();
+        println!("TableView: alignment object '{:?}'", icon_alignment);
         assert!(!column_id.is_empty(), "column_id must be not empty!");
         self.state
             .actions
-            .push(TableAction::AddDefaultColumn(title, column_id));
+            .push(TableAction::AddDefaultColumn(title, column_id, icon_alignment));
         self
     }
 
