@@ -75,7 +75,6 @@ impl<'a> Context<'a> {
         if let Some(handle) = self.provider.raw_window_handle {
             return Some(handle);
         }
-
         None
     }
 
@@ -118,7 +117,6 @@ impl<'a> Context<'a> {
         if result.is_none() {
             panic!("Context::child: Could not find child with id: {}.", id);
         }
-
         result.unwrap()
     }
 
@@ -189,7 +187,6 @@ impl<'a> Context<'a> {
 
             current = parent;
         }
-
         None
     }
 
@@ -247,7 +244,6 @@ impl<'a> Context<'a> {
             bctx.append_child(overlay, child);
             return Ok(());
         }
-
         Err("Context.append_child_to_overlay: Could not find overlay.".to_string())
     }
 
@@ -264,7 +260,6 @@ impl<'a> Context<'a> {
             self.append_child_entity_to(overlay, child);
             return Ok(());
         }
-
         Err("Context.append_child_entity_to_overlay: Could not find overlay.".to_string())
     }
 
@@ -347,14 +342,13 @@ impl<'a> Context<'a> {
                     dirty_widgets.remove(index);
                 }
             }
-
             self.remove_child_from(child, parent);
         }
     }
 
     // -- Manipulation --
 
-    /// Returns the entity of a child, identified by its id.
+    /// Returns the `entity of a child`, identified by its `id`.
     /// If there is no matching id string, `None` will be returned.
     pub fn entity_of_child<'b>(&mut self, id: impl Into<&'b str>) -> Option<Entity> {
         let id = id.into();
@@ -377,11 +371,10 @@ impl<'a> Context<'a> {
                 break;
             }
         }
-
         None
     }
 
-    /// Returns the entity of the parent referenced by css `element`.
+    /// Returns the `entity of the parent` referenced by css `element`.
     /// If there is no id defined None will be returned.
     pub fn parent_entity_by_style<'b>(&mut self, element: impl Into<&'b str>) -> Option<Entity> {
         let mut current = self.entity;
@@ -407,7 +400,6 @@ impl<'a> Context<'a> {
 
             current = parent;
         }
-
         None
     }
 
@@ -423,11 +415,10 @@ impl<'a> Context<'a> {
                 .iter()
                 .position(|e| *e == entity);
         }
-
         None
     }
 
-    /// Creates and show a new window.
+    /// Creates and shows a new window.
     pub fn show_window<F: Fn(&mut BuildContext) -> Entity + 'static>(&mut self, create_fn: F) {
         let (adapter, settings, receiver) = create_window(
             self.provider.application_name.clone(),
@@ -476,14 +467,13 @@ impl<'a> Context<'a> {
         self.get_widget(root).update_dirty(true);
     }
 
-    /// Used to localize a text. If there is no localized text for the
-    /// given key or no localization service the `key` will be returned
-    /// as result.
+    /// Localize the text property of a widget. If the given key has
+    /// no translated text for the choosen language or no localization service
+    /// has been included, the key itself will be returned as the result.
     pub fn localize_text(&self, key: String) -> String {
         if let Some(localization) = &self.provider.localization {
             return localization.borrow().text(key);
         }
-
         key
     }
 
@@ -554,10 +544,10 @@ pub fn find_parent(tree: &Tree, target_child: Entity, parent: Entity) -> Option<
             return parent;
         }
     }
-
     None
 }
 
+/// Finds all the `child entities` of the given parent.
 pub fn get_all_children(children: &mut Vec<Entity>, parent: Entity, tree: &Tree) {
     for child in &tree.children[&parent] {
         children.push(*child);
