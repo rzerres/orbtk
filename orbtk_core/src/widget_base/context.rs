@@ -63,12 +63,14 @@ impl<'a> Context<'a> {
     }
 
     /// Switch current `Context` to context of given widget `another`.
-    /// Don't forget to change back to the original context once you are done.
+    /// Don't forget to change back to the original context once you
+    /// are done.
     pub fn change_into(&mut self, another: Entity) {
         self.entity = another;
     }
 
-    /// Access the raw window handle. Could be `None` on unsupported raw-window-handle platforms like `Redox`.
+    /// Access the raw window handle. Could be `None` on unsupported
+    /// raw-window-handle platforms like `Redox`.
     pub fn raw_window_handle(&self) -> Option<RawWindowHandle> {
         if let Some(handle) = self.provider.raw_window_handle {
             return Some(handle);
@@ -120,8 +122,8 @@ impl<'a> Context<'a> {
         result.unwrap()
     }
 
-    /// Returns a child of the widget of the current state referenced by css `id`.
-    /// If there is no id defined, None will returned.
+    /// Returns a child of the widget of the current state referenced
+    /// by css `id`.  If there is no id defined, `None` will be returned.
     pub fn try_child<'b>(&mut self, id: impl Into<&'b str>) -> Option<WidgetContainer<'_>> {
         self.entity_of_child(id)
             .map(move |child| self.get_widget(child))
@@ -146,8 +148,9 @@ impl<'a> Context<'a> {
         Some(self.get_widget(entity))
     }
 
-    /// Returns a parent of the widget of the current state referenced by css `id`.
-    /// Panics if a parent with the given id could not be found
+    /// Returns a parent of the widget of the current state referenced
+    /// by css `id`. Panics if a parent with the given id could not
+    /// be found.
     pub fn parent_from_id<'b>(&mut self, id: impl Into<&'b str>) -> WidgetContainer<'_> {
         let mut current = self.entity;
         let id = id.into();
@@ -169,7 +172,7 @@ impl<'a> Context<'a> {
     }
 
     /// Returns a parent of the widget of the current state referenced by css `id`.
-    /// If there is no id defined None will be returned.
+    /// If there is no id defined `None` will be returned.
     pub fn try_parent_from_id<'b>(
         &mut self,
         id: impl Into<&'b str>,
@@ -198,7 +201,8 @@ impl<'a> Context<'a> {
     }
 
     /// Returns the child of the current widget.
-    /// If the index is out of the children index bounds or the widget has no children None will be returned.
+    /// If the index is out of the children index bounds or the widget
+    /// has no children `None` will be returned.
     pub fn try_child_from_index(&mut self, index: usize) -> Option<WidgetContainer<'_>> {
         if index >= self.ecm.entity_store().children[&self.entity].len() {
             return None;
@@ -233,8 +237,9 @@ impl<'a> Context<'a> {
         bctx.append_child(parent, child);
     }
 
-    /// Appends a child widget to overlay (on the top of the main tree). If the overlay does not
-    /// exists an error will be returned.
+    /// Appends a child widget to overlay (on the top of the main
+    /// tree). If the overlay does not exists an error will be
+    /// returned.
     pub fn append_child_to_overlay<W: Widget>(&mut self, child: W) -> Result<(), String> {
         if let Some(overlay) = self.ecm.entity_store().overlay {
             let bctx = &mut self.build_context();
@@ -251,8 +256,9 @@ impl<'a> Context<'a> {
         self.build_context().append_child(parent, child)
     }
 
-    /// Appends a child entity to overlay (on the top of the main tree). If the overlay does not
-    /// exists an error will be returned.
+    /// Appends a child entity to overlay (on the top of the main
+    /// tree). If the overlay does not exists an error will be
+    /// returned.
     pub fn append_child_entity_to_overlay(&mut self, child: Entity) -> Result<(), String> {
         if let Some(overlay) = self.ecm.entity_store().overlay {
             self.append_child_entity_to(overlay, child);
@@ -272,14 +278,14 @@ impl<'a> Context<'a> {
         self.append_child_entity_to(self.entity, child);
     }
 
-    /// Removes a child from the current widget. If the given entity is not a child
-    /// of the given parent nothing will happen.
+    /// Removes a child from the current widget. If the given entity
+    /// is not a child of the given parent nothing will happen.
     pub fn remove_child(&mut self, child: Entity) {
         self.remove_child_from(child, self.entity);
     }
 
-    /// Removes a child from the overlay. If the given entity is not a child
-    /// of the given parent nothing will happen.
+    /// Removes a child from the overlay. If the given entity is not a
+    /// child of the given parent nothing will happen.
     pub fn remove_child_from_overlay(&mut self, child: Entity) -> Result<(), String> {
         if let Some(overlay) = self.ecm.entity_store().overlay {
             self.remove_child_from(child, overlay);
@@ -289,8 +295,9 @@ impl<'a> Context<'a> {
         Err("Context.remove_child_from_overlay: Could not find overlay.".to_string())
     }
 
-    /// Removes (recursive) a child from the given parent. If the given entity is not a child
-    /// of the given parent nothing will happen.
+    /// Removes (recursive) a child from the given parent. If the
+    /// given entity is not a child of the given parent nothing will
+    /// happen.
     pub fn remove_child_from(&mut self, remove_entity: Entity, parent: Entity) {
         let tree = &*self.ecm.entity_store();
         if let Some(parent) = find_parent(tree, remove_entity, parent) {
@@ -306,7 +313,8 @@ impl<'a> Context<'a> {
         }
     }
 
-    /// Returns a mutable reference of the children that should be removed.
+    /// Returns a mutable reference of the children that should be
+    /// removed.
     pub fn remove_widget_list(&mut self) -> &mut Vec<Entity> {
         &mut self.remove_widget_list
     }
@@ -468,7 +476,9 @@ impl<'a> Context<'a> {
         self.get_widget(root).update_dirty(true);
     }
 
-    /// Used to localize a text. If there is no localized text for the given key or no localization service the key will be returned as result.
+    /// Used to localize a text. If there is no localized text for the
+    /// given key or no localization service the `key` will be returned
+    /// as result.
     pub fn localize_text(&self, key: String) -> String {
         if let Some(localization) = &self.provider.localization {
             return localization.borrow().text(key);
@@ -492,7 +502,8 @@ impl<'a> Context<'a> {
         self.provider.message_adapter.send_message(message, entity);
     }
 
-    /// Gets a new sender that allows to communicate with the window shell.
+    /// Gets a new sender that allows to communicate with the window
+    /// shell.
     pub fn send_window_request(&self, request: WindowRequest) {
         self.provider
             .window_sender
