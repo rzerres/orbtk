@@ -17,7 +17,7 @@ use super::{component, component_try_mut, Layout};
 pub struct PaddingLayout {
     desired_size: RefCell<DirtySize>,
     old_alignment: Cell<(Alignment, Alignment)>,
-    old_parent_size: Cell<(f64, f64)>,
+    parent_size_previous: Cell<(f64, f64)>,
 }
 
 impl PaddingLayout {
@@ -116,7 +116,7 @@ impl Layout for PaddingLayout {
             return (0.0, 0.0);
         }
 
-        if !self.desired_size.borrow().dirty() && parent_size == self.old_parent_size.get() {
+        if !self.desired_size.borrow().dirty() && parent_size == self.parent_size_previous.get() {
             return self.desired_size.borrow().size();
         }
 
@@ -202,7 +202,7 @@ impl Layout for PaddingLayout {
 
             mark_as_dirty("bounds", child, ecm);
         }
-        self.old_parent_size.set(parent_size);
+        self.parent_size_previous.set(parent_size);
         self.desired_size.borrow_mut().set_dirty(false);
         size
     }

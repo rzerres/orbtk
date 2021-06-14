@@ -1,4 +1,4 @@
-use crate::{api::prelude::*, proc_macros::*};
+use crate::{ api::prelude::*, proc_macros::* };
 
 /// The `PopupState` handles the open and close behavior of the `Popup` widget.
 #[derive(Default, AsAny)]
@@ -62,6 +62,9 @@ widget!(
 
         /// Sets or shares the padding property.
         padding: Thickness,
+
+        /// Sets the relative positon.
+        relative_position: RelativePosition,
 
         /// Sets or shares the target id to place the popup.
         target: u32,
