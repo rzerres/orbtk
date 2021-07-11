@@ -35,5 +35,10 @@ threadpool = "1.8"
 [target.wasm32-unknown-unknown.dependencies]
 stdweb = "0.4"
 
+[target.x86_64-unknown-linux-gnu]
+rustflags = [
+    "-C", "link-arg=-fuse-ld=lld",
+]
+
 [features]
 debug = []

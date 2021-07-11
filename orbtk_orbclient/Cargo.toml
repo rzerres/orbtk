@@ -25,5 +25,10 @@ orbtk_utils = { path = "../utils", version = "0.3.1-alpha4" }
 [target.'cfg(not(target_os = "redox"))'.dependencies]
 sdl2 = { version = "0.34", features = ["bundled", "static-link", "raw-window-handle"] }
 
+[target.x86_64-unknown-linux-gnu]
+rustflags = [
+    "-C", "link-arg=-fuse-ld=lld",
+]
+
 [features]
 log = []

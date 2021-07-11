@@ -15,5 +15,10 @@ tiny-skia = "0.5.1"
 rusttype = { version = "0.9" }
 smallvec = "1"
 
+[target.x86_64-unknown-linux-gnu]
+rustflags = [
+    "-C", "link-arg=-fuse-ld=lld",
+]
+
 [dependencies]
 orbtk_utils = { path = "../utils", version = "0.3.1-alpha4" }
