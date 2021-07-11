@@ -13,7 +13,7 @@ edition = "2018"
 doctest = false
 
 [dependencies]
-rust_decimal = "1.7"
+rust_decimal = "1.14"
 lazy_static = "1.4"
 
 # orbtk
