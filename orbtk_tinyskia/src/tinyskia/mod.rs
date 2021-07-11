@@ -2,6 +2,8 @@ use smallvec::SmallVec;
 use std::{
     collections::HashMap,
     f64::consts::{FRAC_PI_2, PI},
+    //mem::swap,
+    mem::take,
     ptr,
 };
 use tiny_skia::{
@@ -21,7 +23,7 @@ struct State {
     config: RenderConfig,
     path_rect: PathRect,
     clips_count: usize,
-    //clip_mask: ClipMask,
+    clip_mask: ClipMask,
     transform: Transform,
 }
 
@@ -32,7 +34,7 @@ type StatesOnStack = [State; 2];
 pub struct RenderContext2D {
     background: Color,
     clips_count: usize,
-    //clip_mask: ClipMask,
+    clip_mask: ClipMask,
     config: RenderConfig,
     fill_paint: Paint<'static>,
     fonts: HashMap<String, Font>,
@@ -51,7 +53,7 @@ impl RenderContext2D {
         RenderContext2D {
             background: Color::default(),
             clips_count: 0,
-            //clip_mask: ClipMask::default(),
+            clip_mask: ClipMask::default(),
             config: RenderConfig::default(),
             fill_paint: Self::paint_from_brush(
                 &Brush::default(),
@@ -357,7 +359,7 @@ impl RenderContext2D {
                 FillRule::EvenOdd,
                 true,
             );
-            //self.clip_mask = clip_mask;
+            self.clip_mask = clip_mask;
         }
         self.path_rect.record_clip();
         self.clips_count += 1;
@@ -641,7 +643,7 @@ impl RenderContext2D {
             config,
             path_rect,
             clips_count: former_clips_count,
-            //clip_mask,
+            clip_mask,
             transform,
         }) = self.saved_states.pop()
         {
@@ -653,7 +655,7 @@ impl RenderContext2D {
             }*/
             //self.pixmap.reset_clip();
             self.clips_count = former_clips_count;
-            //self.clip_mask = clip_mask;
+            self.clip_mask = clip_mask;
             self.transform = transform;
         }
     }
@@ -661,11 +663,15 @@ impl RenderContext2D {
     /// Saves the entire state of the pixmap by pushing the current
     /// state onto a stack.
     pub fn save(&mut self) {
+        // self.clip_mask does not implement the copy trait. Using
+        // std::mem::take allows us to disassociate the original value
+        // of self.clip.mask from self.
+        let clip_mask = take(&mut self.clip_mask);
         self.saved_states.push(State {
             config: self.config.clone(),
             path_rect: self.path_rect,
             clips_count: self.clips_count,
-            //clip_mask: self.clip_mask,
+            clip_mask,
             transform: self.transform,
         });
     }
